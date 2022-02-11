@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tolerations-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tolerations-1
+  template:
+    metadata:
+      labels:
+        app: tolerations-1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - name: nginx-port
+          containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tolerations-2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tolerations-2
+  template:
+    metadata:
+      labels:
+        app: tolerations-2
+    spec:
+      tolerations:
+      - key: "type"
+        operator: "Equal"
+        value: "specialnode"
+        effect: "NoSchedule"
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - name: nginx-port
+          containerPort: 80
+          
+          
+kubectl taint nodes NODE-NAME type=specialnode:NoSchedule
