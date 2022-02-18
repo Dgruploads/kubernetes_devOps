@@ -1,2 +1,30 @@
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
 
+kubectl get all -n kubernetes-dashboard
+
+kubectl edit service/kubernetes-dashboard -n kubernetes-dashboard
+
+# Updated the type to NodePort in the service.
+ ports:
+ port: 443 
+ protocol: TCP
+ targetPort: 8443
+ selector:
+ k8s-app: kubernetes-dashboard
+ sessionAffinity: None
+ type: NodePort 
+ 
+kubectl get pods --all-namespaces
+
+#Whenever you modify the service type, you must delete the pod. Once deleted, Kubernetes will create a new one for you with the updated service type to access the entire network.
+kubectl delete pod kubernetes-dashboard-78c79f97b4-gjr2l -n kubernetes-dashboard
+
+kubectl get svc --all-namespaces
+
+kubectl create serviceaccount dashboard -n kubernetes-dashboard
+
+kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount dashboard -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+kubectl create clusterrolebinding dashboard-admin -n kubernetes-dashboard  --clusterrole=cluster-admin  --serviceaccount=kubernetes-dashboard:dashboard
+
+Open your favorite browser and navigate to https://kuberntes-node:NodePort/#/login to access the Kubernetes dashboard.
