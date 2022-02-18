@@ -1,0 +1,55 @@
+sudo hostnamectl set-hostname "manager_machine" (On master machine)
+
+sudo hostnamectl set-hostname "worker_machine_one" (On node machine one)
+
+sudo hostnamectl set-hostname "worker_machine_two" (On node machine two)
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - (On all machines)
+
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ (On all machines)
+   $(lsb_release -cs) \ (On all machines)
+  stable" (On all machines)
+  
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - (On all machines)
+
+cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list (On all machines)
+deb https://apt.kubernetes.io/ kubernetes-xenial main (On all machines)
+EOF (On all machines)
+
+sudo apt-get update (On all machines)
+
+sudo apt-get install -y docker.io kubelet kubeadm kubectl (On all machines)
+
+sudo apt-mark hold docker-ce kubelet kubeadm kubectl (On all machines)
+
+echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf (On all machines)
+
+sudo sysctl -p (On all machines)
+
+sudo mkdir /etc/docker (On all machines)
+cat <<EOF | sudo tee /etc/docker/daemo n.json (On all machines)
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+sudo systemctl enable docker (On all machines)
+sudo systemctl daemon-reload (On all machines)
+sudo systemctl restart docker (On all machines)
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 (On master machine)
+
+mkdir -p $HOME/.kube (On master machine)
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config (On master machine)
+sudo chown $(id -u):$(id -g) $HOME/.kube/config (On master machine)
+
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml (On master machine)
+
+sudo kubeadm join 172.31.4.161:6443 --token 0y52t6.ffsj8jkjfcl1sq8h \ (On remote machines)
+   --discovery-token-ca-cert-hash sha256:7aa1825042d19d3e567f7e4b447634e942fe9ed7f18f78464a9c05f451551ed5
+   
+kubectl get nodes (On master machine)
