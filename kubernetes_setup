@@ -6,9 +6,7 @@ sudo hostnamectl set-hostname "worker_machine_two"
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
 
-sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ 
-   $(lsb_release -cs) \ 
-  stable"
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
@@ -27,7 +25,7 @@ echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 sudo mkdir /etc/docker
-cat <<EOF | sudo tee /etc/docker/daemo n.json
+cat <<EOF | sudo tee /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
