@@ -25,3 +25,7 @@ spec:
  volumes:
  - name: xchange
    emptyDir: {}
+
+
+
+kubectl exec -it sharevol -c c2 bash
