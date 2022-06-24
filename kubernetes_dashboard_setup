@@ -21,10 +21,8 @@ kubectl delete pod kubernetes-dashboard-78c79f97b4-gjr2l -n kubernetes-dashboard
 
 kubectl get svc --all-namespaces
 
-kubectl create serviceaccount dashboard -n kubernetes-dashboard
+kubectl create -f dashboard_user.yml
 
-kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount dashboard -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+kubectl -n kubernetes-dashboard create token admin-user
 
-kubectl create clusterrolebinding dashboard-admin -n kubernetes-dashboard  --clusterrole=cluster-admin  --serviceaccount=kubernetes-dashboard:dashboard
-
-Open your favorite browser and navigate to https://kuberntes-node:NodePort/#/login to access the Kubernetes dashboard.
+Open your favorite browser and navigate to https://kuberntes-node:NodePort/#/login to access the Kubernetes dashboard. Example - https://3.86.185.35:31315/#/login
