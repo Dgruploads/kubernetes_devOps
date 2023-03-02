@@ -51,3 +51,19 @@ sudo kubeadm join 172.31.4.161:6443 --token 0y52t6.ffsj8jkjfcl1sq8h \
    --discovery-token-ca-cert-hash sha256:7aa1825042d19d3e567f7e4b447634e942fe9ed7f18f78464a9c05f451551ed5
    
 kubectl get nodes
+
+
+
+
+=======================================================================================================================================
+FIX - [ERROR CRI]: container runtime is not running: output: time="2023-03-02T09:16:52Z" level=fatal msg="validate service connection: 
+CRI v1 runtime API is not implemented for endpoint \"unix:///var/run/containerd/containerd.sock\": rpc error: code = Unimplemented 
+desc = unknown service runtime.v1.RuntimeService"
+=======================================================================================================================================
+
+wget https://github.com/containerd/containerd/releases/download/v1.6.12/containerd-1.6.12-linux-amd64.tar.gz
+tar xvf containerd-1.6.12-linux-amd64.tar.gz
+systemctl stop containerd
+cd bin
+cp * /usr/bin/
+systemctl start containerd
