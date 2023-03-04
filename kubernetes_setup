@@ -1,3 +1,4 @@
+#### Run the below commands on all the machines (master, slave machines) ####
 sudo hostnamectl set-hostname "manager_machine"
 
 sudo hostnamectl set-hostname "worker_machine_one"
@@ -38,7 +39,9 @@ EOF
 sudo systemctl enable docker
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+#### Run the above commands on all the machines (master, slave machines) ####
 
+#### Run the below commands on all the master machine only ####
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 mkdir -p $HOME/.kube
@@ -46,10 +49,13 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+#### Run the above commands on all the master machine only ####
 
+#### Run the below command on all the slave machines ####
 sudo kubeadm join 172.31.4.161:6443 --token 0y52t6.ffsj8jkjfcl1sq8h \
    --discovery-token-ca-cert-hash sha256:7aa1825042d19d3e567f7e4b447634e942fe9ed7f18f78464a9c05f451551ed5
-   
+#### Run the above command on all the slave machines ####
+
 kubectl get nodes
 
 
