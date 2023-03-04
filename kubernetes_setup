@@ -52,6 +52,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 #### Run the above commands on all the master machine only ####
 
 #### Run the below command on all the slave machines ####
+#### This is an example command ####
 sudo kubeadm join 172.31.4.161:6443 --token 0y52t6.ffsj8jkjfcl1sq8h \
    --discovery-token-ca-cert-hash sha256:7aa1825042d19d3e567f7e4b447634e942fe9ed7f18f78464a9c05f451551ed5
 #### Run the above command on all the slave machines ####
