@@ -1,5 +1,5 @@
 ### The below steps can be used to setup kubernetes cluster on AWS using Kops ###
-1 : Install Kops using the following link - https://kubernetes.io/docs/setup/production-environment/tools/kops/
+1 : Install Kops using the following link - https://kops.sigs.k8s.io/getting_started/install/
 2 : Update the system
     sudo apt update -y
 3 : Install aws cli tool
