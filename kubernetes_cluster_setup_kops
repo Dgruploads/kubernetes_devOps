@@ -19,6 +19,6 @@
 13 : Generate SSH keys by running the below command
     ssh-keygen -f .ssh/id_rsa
 14 : Run the below example command to create the cluster. NOTE : You will have to update the command with your specific changes
-    kops create cluster --name=kubernetes.cloudtechiez.cloud --state=s3://dgruploads-kube-kops-demo --zones=us-east-1a --node-count=1 --node-size=t2.medium --master-size=t2.medium --dns-zone=kubernetes.cloudtechiez.cloud
+    kops create cluster --name=kubernetes.cloudtechiez.cloud --state=s3://dgruploads-kube-kops-demo --zones=us-east-1a --node-count=1 --node-size=t2.medium --control-plane-size=t2.medium --dns-zone=kubernetes.cloudtechiez.cloud
 15 : Running the above command will generate a preview of all the resources that Kops will create. Once you are okay with the preview, run the below command to create those resources. Update the S3 bucket to your S3 bucket.
     kops update cluster --name kubernetes.cloudtechiez.cloud --yes --admin --state=s3://dgruploads-kube-kops-demo
