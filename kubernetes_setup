@@ -25,6 +25,12 @@ sudo apt-get install -y docker.io kubelet kubeadm kubectl
 
 sudo apt-mark hold docker-ce kubelet kubeadm kubectl
 
+# Load the kernel module ====> This is required for the below step (sudo sysctl -p)
+sudo modprobe br_netfilter
+
+# Verify it's loaded
+lsmod | grep br_netfilter
+
 echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 
 sudo sysctl -p
